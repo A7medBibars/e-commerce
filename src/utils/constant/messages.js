@@ -25,4 +25,5 @@ export const messages = {
   review: generateMessages("review"),
   cart: generateMessages("cart"),
   coupon: generateMessages("coupon"),
+  order: generateMessages("order"),
 };

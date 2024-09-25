@@ -1,4 +1,5 @@
 import { model, Schema } from "mongoose";
+import { discountTypes } from "../../src/utils/constant/enums.js";
 
 //Schema
 const couponSchema = new Schema(
@@ -14,9 +15,9 @@ const couponSchema = new Schema(
     },
     couponType: {
       type: String,
-      enum: ["fixed", "percentage"],
+      enum: Object.values(discountTypes),
       //   required: true,
-      default: "fixed",
+      default: discountTypes.FIXED_AMOUNT,
     },
     validFrom: {
       type: String,
@@ -45,7 +46,7 @@ const couponSchema = new Schema(
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
-    //   required: true,
+      //   required: true,
     },
   },
   { timestamps: true }

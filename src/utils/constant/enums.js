@@ -16,6 +16,7 @@ export const status = {
   PENDING: "pending",
   VERIFIED: "verified",
   BLOCKED: "blocked",
+  DELETED: "deleted",
 };
 Object.freeze(status);
 

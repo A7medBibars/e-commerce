@@ -5,6 +5,8 @@ import { messages } from "../../utils/constant/messages.js";
 import { sendEmail } from "../../utils/email.js";
 import { generateToken, verifyToken } from "../../utils/token.js";
 import { status } from "../../utils/constant/enums.js";
+import { generateOTP } from "../../utils/otp.js";
+import { hashPassword } from "../../utils/password.js";
 
 export const signup = async (req, res, next) => {
   let { userName, email, password, phone } = req.body;
@@ -89,5 +91,88 @@ export const login = async (req, res, next) => {
     message: messages.user.loginSuccessfully,
     success: true,
     data: userExist,
+  });
+};
+
+export const forgetPassword = async (req, res, next) => {
+  const { email } = req.body;
+
+  //check existence
+  const userExist = await User.findOne({ email });
+
+  if (!userExist) {
+    return next(new AppError(messages.user.notFound, 404));
+  }
+
+  //check if has otp
+  if (!userExist.otp && userExist.otpExpiry > Date.now()) {
+    return next(new AppError("already has otp check ur email", 400));
+  }
+
+  //send otp
+  const otp = generateOTP();
+
+  // save to user
+  userExist.otp = otp;
+  userExist.otpExpiry = Date.now() + 15 + 60 + 1000;
+
+  //save to db
+  await userExist.save();
+
+  //send email
+  await sendEmail({
+    to: email,
+    subject: "forget password",
+    html: `<h1>your otp is ${otp} </h1>`,
+  });
+
+  return res.status(200).json({
+    success: true,
+    message: "otp sent successfully",
+  });
+};
+
+export const changePassword = async (req, res, next) => {
+  const { otp, newPass, email } = req.body;
+
+  //check existence
+  const userExist = await User.findOne({ email });
+
+  if (!userExist) {
+    return next(new AppError(messages.user.notFound, 404));
+  }
+
+  if (userExist.otp != otp) {
+    return next(new AppError("invalid otp", 400));
+  }
+
+  if (userExist.otpExpiry < Date.now()) {
+    const resentOtp = generateOTP();
+    userExist.otp = resentOtp;
+    userExist.otpExpiry = Date.now() + 15 + 60 + 1000;
+    await userExist.save();
+    await sendEmail({
+      to: email,
+      subject: "resend otp",
+      html: `<h1>your otp is ${resentOtp} </h1>`,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "otp resend successfully",
+    });
+  }
+  //hash new pass
+  const newHashPassword = hashPassword({ password: newPass });
+
+  userExist.password = newHashPassword;
+  userExist.otp = undefined;
+  userExist.otpExpiry = undefined;
+  //save to db
+  await userExist.save();
+
+  return res.status(200).json({
+    success: true,
+    message: "password changed successfully",
   });
 };

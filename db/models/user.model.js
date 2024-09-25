@@ -47,6 +47,8 @@ const userSchema = new Schema(
       public_id: { type: String, required: false },
     },
     wishlist: [{ type: Schema.Types.ObjectId, ref: "Product" }],
+    otp: Number,
+    otpExpiry: Date,
   },
   { timestamps: true }
 );

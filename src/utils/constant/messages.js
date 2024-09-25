@@ -21,6 +21,7 @@ export const messages = {
     verified: "user verified successfully",
     invalidCredentials: "Invalid Credentials",
     loginSuccessfully: "logged in Successfully",
+    passwordUpdated: "password updated successfully",
   },
   review: generateMessages("review"),
   cart: generateMessages("cart"),

@@ -7,8 +7,10 @@ import orderRouter from "./modules/order/order.router.js";
 import productRouter from "./modules/product/product.router.js";
 import reviewRouter from "./modules/review/review.router.js";
 import subcategoryRouter from "./modules/subcategory/subcategory.router.js";
+import userRouter from "./modules/user/user.router.js";
 import wishlistRouter from "./modules/wishlist/wishlist.router.js";
 export {
+  userRouter,
   orderRouter,
   couponRouter,
   authRouter,

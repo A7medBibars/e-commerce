@@ -1,6 +1,9 @@
 import express from "express";
+import dotenv from "dotenv";
+import path from "path";
 import { connectDB } from "./db/connection.js";
 import { globalErrorHandler } from "./src/utils/appError.js";
+import { scheduleJob } from "node-schedule";
 // import categoryRouter from "./src/modules/category/category.router.js";
 // import subcategoryRouter from "./src/modules/subcategory/subcategory.router.js";
 // import brandRouter from "./src/modules/brand/brand.router.js";
@@ -8,7 +11,8 @@ import { globalErrorHandler } from "./src/utils/appError.js";
 import * as allRouters from "./src/index.js";
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
+dotenv.config({ path: path.resolve("./config/.env") });
 
 connectDB();
 
@@ -22,6 +26,7 @@ app.use("/review", allRouters.reviewRouter);
 app.use("/wishlist", allRouters.wishlistRouter);
 app.use("/cart", allRouters.cartRouter);
 app.use("/coupon", allRouters.couponRouter);
+app.use("/order", allRouters.orderRouter);
 
 app.use(globalErrorHandler);
 

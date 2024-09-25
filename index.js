@@ -17,6 +17,9 @@ dotenv.config({ path: path.resolve("./config/.env") });
 connectDB();
 
 app.use(express.json());
+app.use("*", (req, res, next) => {
+  return res.json({ message: "invalid url" });
+});
 app.use("/category", allRouters.categoryRouter);
 app.use("/subcategory", allRouters.subcategoryRouter);
 app.use("/brand", allRouters.brandRouter);

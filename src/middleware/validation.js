@@ -42,9 +42,9 @@ export const isValid = (schema) => {
     let data = { ...req.body, ...req.params, ...req.query };
     const { error } = schema.validate(data, { abortEarly: false });
     if (error) {
-      errArr = [];
-      error.details.forEach((error) => {
-        errArr.push(error.message);
+      const errArr = [];
+      error.details.forEach((err) => {
+        errArr.push(err.message);
       });
       return next(new AppError(errArr, 400));
     }

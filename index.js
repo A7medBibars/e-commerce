@@ -55,9 +55,9 @@ app.post(
 );
 
 app.use(express.json());
-app.use("*", (req, res, next) => {
-  return res.json({ message: "invalid url" });
-});
+// app.use("*", (req, res, next) => {
+//   return res.json({ message: "invalid url" });
+// });
 app.use("/category", allRouters.categoryRouter);
 app.use("/subcategory", allRouters.subcategoryRouter);
 app.use("/brand", allRouters.brandRouter);
@@ -75,7 +75,6 @@ app.use(globalErrorHandler);
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
-
 
 const job = scheduleJob("1 1 1 * * *", async function () {
   const deletedUsers = await User.find({

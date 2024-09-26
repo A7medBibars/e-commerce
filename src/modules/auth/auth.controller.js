@@ -59,7 +59,7 @@ export const verifyAcc = async (req, res, next) => {
     { new: true }
   );
   //create cart
-  await Cart.create({ user: user._id, products: [] });
+  await Cart.create({ user: payload._id, products: [] });
 
   return res.status(200).json({
     message: messages.user.verified,
@@ -84,7 +84,6 @@ export const login = async (req, res, next) => {
   //generate token
   const token = generateToken({
     payload: { email, _id: userExist._id },
-    secretKey: process.env.secretKeyAccessToken,
   });
   // send response
   return res.status(200).json({

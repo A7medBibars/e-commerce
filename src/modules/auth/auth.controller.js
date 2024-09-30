@@ -113,7 +113,7 @@ export const forgetPassword = async (req, res, next) => {
 
   // save to user
   userExist.otp = otp;
-  userExist.otpExpiry = Date.now() + 15 + 60 + 1000;
+  userExist.otpExpiry = Date.now() + 15 * 60 * 1000;
 
   //save to db
   await userExist.save();
@@ -148,7 +148,7 @@ export const changePassword = async (req, res, next) => {
   if (userExist.otpExpiry < Date.now()) {
     const resentOtp = generateOTP();
     userExist.otp = resentOtp;
-    userExist.otpExpiry = Date.now() + 15 + 60 + 1000;
+    userExist.otpExpiry = Date.now() + 15 * 60 * 1000;
     await userExist.save();
     await sendEmail({
       to: email,

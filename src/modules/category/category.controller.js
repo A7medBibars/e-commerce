@@ -36,7 +36,6 @@ export const addCategory = async (req, res, next) => {
   //save
   const createdCategory = await category.save();
   if (!createdCategory) {
-    // todo rollback
     return next(new AppError(messages.failToCreate, 500));
   }
 

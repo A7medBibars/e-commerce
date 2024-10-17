@@ -6,7 +6,6 @@ export const addReview = async (req, res, next) => {
   // get data
   const { productId, rate, comment } = req.body;
 
-  // todo check order
 
   // check if user has already reviewed this product
   const reviewExist = await Review.findOneAndUpdate(

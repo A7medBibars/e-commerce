@@ -35,7 +35,7 @@ export const createBrand = async (req, res, next) => {
     logo: {
       secure_url,
       public_id,
-      // todo createdBy
+      createdBy: req.authUser._id,
     },
   });
   //add to db
